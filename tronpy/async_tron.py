@@ -110,16 +110,16 @@ class AsyncTransaction(object):
                  txid: str = "",
                  permission: dict = None,
                  signature: list = None):
-        self._raw_data: dict = raw_data
-        self._signature: list = signature or []
+        self._raw_data: dict = raw_data.get("raw_data", raw_data)
+        self._signature: list = raw_data.get("signature", [])
         self._client = client
 
         self._method = method
 
-        self.txid: str = txid
+        self.txid: str = raw_data.get("txID", "")
         """The transaction id in hex."""
 
-        self._permission: Optional[dict] = permission
+        self._permission: Optional[dict] = raw_data.get("permission", permission)
 
         # IMPORTANT must use "Transaction.create" to create a new Transaction
 

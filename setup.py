@@ -6,12 +6,12 @@ packages = ['tronpy', 'tronpy.keys', 'tronpy.providers']
 package_data = {'': ['*']}
 
 install_requires = [
-    'base58>=2.0.0,<3.0.0',
-    'ecdsa>=0.15,<0.16',
-    'eth_abi>=2.1.1,<3.0.0',
+    'base58',
+    'ecdsa>=0.17,<0.18',
+    'eth_abi<4.0.0,>=3.0.0',
     'pycryptodome>=3.9.7,<4.0.0',
     'requests>=2.23.0,<3.0.0',
-    'httpx==0.16.1',
+    'httpx',
 ]
 
 setup_kwargs = {

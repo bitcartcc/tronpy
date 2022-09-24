@@ -171,6 +171,15 @@ class Contract(object):
             raise ValueError("can not call a contract without ABI")
         return self._events
 
+    def get_function_by_selector(self, selector) -> Union['ContractMethod', None]:
+        selector = selector.hex()
+
+        for fn in self.functions:
+            if selector == fn.function_signature_hash:
+                return fn
+
+        return None
+
 
 class ContractEvents(object):
     def __init__(self, contract):
