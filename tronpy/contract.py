@@ -40,6 +40,7 @@ class Contract(object):
         client=None,
     ):
         self.contract_address = addr
+        self.address = addr
         """Address of the contract"""
 
         self._bytecode = assure_bytes(bytecode)
