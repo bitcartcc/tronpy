@@ -1,32 +1,22 @@
-import time
-import json
 import asyncio
-from pprint import pprint
+import json
+import time
 from decimal import Decimal
-from typing import Union, Tuple, Optional
+from pprint import pprint
+from typing import Optional, Tuple, Union
 
 from tronpy import keys
-from tronpy.async_contract import AsyncContract, ShieldedTRC20, AsyncContractMethod
-from tronpy.keys import PrivateKey
 from tronpy.abi import tron_abi
+from tronpy.async_contract import (AsyncContract, AsyncContractMethod,
+                                   ShieldedTRC20)
 from tronpy.defaults import conf_for_name
+from tronpy.exceptions import (AddressNotFound, ApiError, AssetNotFound,
+                               BadHash, BadKey, BadSignature, BlockNotFound,
+                               BugInJavaTron, TaposError, TransactionError,
+                               TransactionNotFound, TvmError, UnknownError,
+                               ValidationError)
+from tronpy.keys import PrivateKey
 from tronpy.providers.async_http import AsyncHTTPProvider
-from tronpy.exceptions import (
-    BadSignature,
-    BadKey,
-    BadHash,
-    BlockNotFound,
-    AssetNotFound,
-    TaposError,
-    UnknownError,
-    TransactionError,
-    ValidationError,
-    ApiError,
-    AddressNotFound,
-    TransactionNotFound,
-    TvmError,
-    BugInJavaTron,
-)
 
 TAddress = str
 
@@ -669,8 +659,12 @@ class AsyncTron(object):
     async def get_latest_solid_block_id(self) -> str:
         """Get latest solid block id in hex."""
 
-        info = await self.provider.make_request("wallet/getnodeinfo")
-        return info["solidityBlock"].split(",ID:", 1)[-1]
+        try:
+            info = await self.provider.make_request("wallet/getnodeinfo")
+            return info["solidityBlock"].split(",ID:", 1)[-1]
+        except Exception:
+            info = await self.get_latest_solid_block()
+            return info["blockID"]
 
     async def get_latest_solid_block_number(self) -> int:
         """Get latest solid block number. Implemented via `wallet/getnodeinfo`,
