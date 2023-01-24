@@ -7,8 +7,8 @@ package_data = {'': ['*']}
 
 install_requires = [
     'base58',
-    'ecdsa>=0.17,<0.18',
-    'eth_abi<4.0.0,>=3.0.0',
+    'ecdsa>=0.18,<0.19',
+    'eth_abi>=4.0.0a,<5.0.0',
     'pycryptodome>=3.9.7,<4.0.0',
     'requests>=2.23.0,<3.0.0',
     'httpx',

@@ -1,10 +1,9 @@
-from eth_abi import encode_single, decode_single
 from eth_abi.decoding import Fixed32ByteSizeDecoder
 from eth_abi.encoding import Fixed32ByteSizeEncoder
 from eth_abi.exceptions import NonEmptyPaddingBytes
 from eth_abi.registry import BaseEquals
 from eth_abi.base import parse_type_str
-from eth_abi.codec import ABICodec
+from eth_abi.codec import ABICodec as ETHABICodec
 import eth_abi
 from eth_abi.registry import registry as default_registry
 
@@ -65,6 +64,22 @@ def do_patching(registry):
         eth_abi.decoding.UnsignedIntegerDecoder,
         label='trcToken',
     )
+
+class ABICodec(ETHABICodec):
+    def encode_single(self, typ, arg):
+        encoder = self._registry.get_encoder(typ)
+        return encoder(arg)
+
+    def decode_single(self, typ, data):
+        decoder = self._registry.get_decoder(typ)
+        stream = self.stream_class(data)
+        return decoder(stream)
+
+    def encode_abi(self, types, args):
+        return super().encode(types, args)
+
+    def decode_abi(self, types, data):
+        return super().decode(types, data)
 
 
 registry = default_registry.copy()
